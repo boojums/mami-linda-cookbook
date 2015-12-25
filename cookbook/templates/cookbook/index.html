@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mami Linda's Cookbook!</title>
+    </head>
+
+    <body>
+        <h1>Cookbook!</h1>
+
+        {% if categories %}
+            <ul>
+                {% for category in categories %}
+                <li><a href="/cookbook/category/{{ category.slug }}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>There are no categories present.</strong>
+        {% endif %}
+
+        <a href="/cookbook/about/">About</a>
+    </body>
+</html>

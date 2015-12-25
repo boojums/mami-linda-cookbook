@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mami Linda's Cookbook!</title>
+    </head>
+
+    <body>
+        <h1>{{ recipe.title }}</h1>
+
+        <p>{{ recipe.intro }}</p>
+        {% if ingredients %}
+        {% load fractions %}
+            <ul>
+                {% for ingredient in ingredients %}
+                <li>
+                {% if ingredient.quantity %}
+                    {% display_fraction ingredient.quantity %} 
+                {% endif %}
+                {% if ingredient.get_units_display %}
+                    {{ ingredient.get_units_display }}{{ ingredient.quantity|pluralize }}
+                {% endif %} 
+                {{ ingredient.name }}
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <p>{{ recipe.instructions | linebreaks }}</p>
+
+        <a href="/cookbook/">Home</a>
+    </body>
+</html>
