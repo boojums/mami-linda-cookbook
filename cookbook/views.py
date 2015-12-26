@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponse
 
 from cookbook.models import Category, Recipe, Ingredient
+from .filters import RecipeFilter
 
 def index(request):
     category_list = Category.objects.order_by('-name')
@@ -30,3 +31,8 @@ def recipe(request, recipe_name_slug):
     context_dict['ingredients'] = ingredients
 
     return render(request, 'cookbook/recipe.html', context_dict)
+
+
+def recipe_list(request):
+    f = RecipeFilter(request.GET, queryset=Recipe.objects.all())
+    return render_to_response('cookbook/recipelist.html', {'filter': f})

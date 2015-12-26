@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mami Linda's Cookbook!</title>
+    </head>
+
+    <body>
+        <form action="" method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" />
+        </form>
+        {% for obj in filter %}
+            <a href="/cookbook/recipe/{{ obj.slug}}/">{{ obj.title }}</a><br />
+        {% endfor %}
+
+        <a href="/cookbook/">Home</a>
+    </body>
+</html>

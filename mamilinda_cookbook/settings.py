@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'djfractions',
     'tinymce',
+    'django_filters',
     'cookbook.apps.CookbookConfig',
     'django_extensions',
     'django.contrib.admin',
