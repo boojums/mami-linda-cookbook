@@ -34,5 +34,5 @@ def recipe(request, recipe_name_slug):
 
 
 def recipe_list(request):
-    f = RecipeFilter(request.GET, queryset=Recipe.objects.all())
+    f = RecipeFilter(request.GET, queryset=Recipe.objects.all().order_by('book_page'))
     return render_to_response('cookbook/recipelist.html', {'filter': f})

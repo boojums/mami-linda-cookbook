@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import signals
 from django.template.defaultfilters import slugify
 
 class Tag(models.Model):
@@ -22,18 +23,37 @@ class Category(models.Model):
 
 class Recipe(models.Model):
     title = models.CharField(max_length=128)
-    book_page = models.IntegerField()
-    alt_title = models.CharField(max_length=128, blank=True, null=True)
     slug = models.SlugField(unique=True)
+    alt_title = models.CharField(max_length=128, blank=True, null=True)
+    book_page = models.IntegerField()
     category = models.ForeignKey(Category)
     serves = models.IntegerField(blank=True, null=True)
     intro = models.TextField(blank=True, null=True)
+    # For easy autosplitting of copypasted ingredients lists
+    blob_ingredients = models.TextField(blank=True, null=True)
     instructions = models.TextField()
     preptime = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.title
 
+
+def createIngredients(sender, instance, created, **kwargs):
+    ''' Create ingredients from blob if it isn't empty.'''
+    # TODO: This isn't very pretty, probably a better way with 
+    # forms. How do the admin inline forms do it?
+    if instance.blob_ingredients and instance.blob_ingredients != '':
+        Ingredient.objects.filter(recipe=instance).delete()
+        ingredients = instance.blob_ingredients.split('\r\n')
+        for elem in ingredients:
+            Ingredient.objects.create(name=elem, recipe=instance)
+        instance.blob_ingredients = ''
+        instance.save()
+       
+
+signals.post_save.connect(createIngredients, sender=Recipe)
+
+# TODO: unique place + recipe?
 class Ingredient(models.Model):
     name = models.CharField(max_length=256)
     recipe = models.ForeignKey(Recipe)
@@ -59,14 +79,17 @@ class Ingredient(models.Model):
                              choices=units_choices,
                              null=True, blank=True)
 
-    place = models.IntegerField(default=1)
+    place = models.IntegerField(null=True, blank=True)
 
-    def save(self, force_insert=False, force_update=False):
-        if self.place == "":
+    def save(self, *args, **kwargs):
+        if not self.place:
             existing_places = Ingredient.objects.filter(recipe=self.recipe)\
                                                 .order_by('-place')
-            self.code = existing_places[0].place + 1
-        super(Ingredient, self).save(force_insert, force_update)
+            if existing_places:
+                self.place = existing_places[0].place + 1
+            else:
+                self.place = 1
+        super(Ingredient, self).save(*args, **kwargs)
 
     def __str__(self):
         quantity = '{:.2f}'.format(self.quantity) if self.quantity else ''

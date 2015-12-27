@@ -15,7 +15,7 @@ class IngredientAdmin(admin.ModelAdmin):
 
 class IngredientInline(admin.TabularInline):
     model = Ingredient
-    extra = 3
+    extra = 0
     fields = ['quantity', 'units', 'name', 'place']
 
     def get_extra(self, request, obj=None, **kwargs):
