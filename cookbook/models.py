@@ -28,6 +28,7 @@ class Recipe(models.Model):
     book_page = models.IntegerField()
     category = models.ForeignKey(Category)
     serves = models.IntegerField(blank=True, null=True)
+    serves_upper = models.IntegerField(blank=True, null=True)
     intro = models.TextField(blank=True, null=True)
     # For easy autosplitting of copypasted ingredients lists
     blob_ingredients = models.TextField(blank=True, null=True)
