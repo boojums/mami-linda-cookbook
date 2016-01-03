@@ -144,9 +144,8 @@ STATICFILES_DIRS = (
 try:
     from local_settings import *
 except:
-    print """
+    print("""
     =======================================
     Missing local_settings.py file. Needed for email and database information.
     =======================================
-    """
-
+    """)

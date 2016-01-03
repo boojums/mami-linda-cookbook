@@ -35,11 +35,20 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'index' %}">Index</a></li>
-                        {% if user.is_authenticated %}
-                        {% else %}
-                        {% endif %}
+                {% if user.is_authenticated %}
+                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ user.username }} <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                      <li><a href="{% url 'auth_logout' %}?next=/cookbook/">Sign out</a></li>
                   </ul>
+                {% else %}
+                  <li>
+                      <p class="navbar-btn">
+                          <a href="{% url 'auth_login' %}" class="btn btn-success">Sign in</a>
+                      </p>
+                  </li>
+
+                {% endif %}
+              </ul>
             </div>
           </div>
         </div>
@@ -59,14 +68,6 @@
           </div>
         </div>
         
-        <hr />
-
-        <div>
-             <ul>
-
-                <li><a href="{% url 'index' %}">Home</a></li>
-            </ul>
-      </div>
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->

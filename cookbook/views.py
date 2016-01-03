@@ -1,8 +1,9 @@
 from django.shortcuts import render, render_to_response, get_object_or_404
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from cookbook.models import Category, Recipe, Ingredient
 from .filters import RecipeFilter
+
 
 def index(request):
     category_list = Category.objects.order_by('-name')
@@ -10,6 +11,7 @@ def index(request):
     return render(request, 'cookbook/index.html', context_dict)
 
 
+@login_required
 def category(request, category_name_slug):
     context_dict = {}
 
@@ -34,5 +36,6 @@ def recipe(request, recipe_name_slug):
 
 
 def recipe_list(request):
-    f = RecipeFilter(request.GET, queryset=Recipe.objects.all().order_by('book_page'))
+    f = RecipeFilter(request.GET,
+                     queryset=Recipe.objects.all().order_by('book_page'))
     return render_to_response('cookbook/recipelist.html', {'filter': f})

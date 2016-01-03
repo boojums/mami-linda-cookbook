@@ -2,14 +2,16 @@ from django.db import models
 from django.db.models import signals
 from django.template.defaultfilters import slugify
 
+
 class Tag(models.Model):
     # TODO: tags for different things?
     name = models.CharField(max_length=128, unique=True, default='')
 
+
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True, default='')
     slug = models.SlugField(unique=True)
-    
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
@@ -27,9 +29,9 @@ class Recipe(models.Model):
     alt_title = models.CharField(max_length=128, blank=True, null=True)
     book_page = models.IntegerField()
     category = models.ForeignKey(Category)
+    intro = models.TextField(blank=True, null=True)
     serves = models.IntegerField(blank=True, null=True)
     serves_upper = models.IntegerField(blank=True, null=True)
-    intro = models.TextField(blank=True, null=True)
     # For easy autosplitting of copypasted ingredients lists
     blob_ingredients = models.TextField(blank=True, null=True)
     instructions = models.TextField()
@@ -41,7 +43,7 @@ class Recipe(models.Model):
 
 def createIngredients(sender, instance, created, **kwargs):
     ''' Create ingredients from blob if it isn't empty.'''
-    # TODO: This isn't very pretty, probably a better way with 
+    # TODO: This isn't very pretty, probably a better way with
     # forms. How do the admin inline forms do it?
     if instance.blob_ingredients and instance.blob_ingredients != '':
         Ingredient.objects.filter(recipe=instance).delete()
