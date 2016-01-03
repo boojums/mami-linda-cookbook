@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -57,10 +59,14 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'mamilinda_cookbook.urls'
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': TEMPLATE_DIRS,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,7 +79,15 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'mamilinda_cookbook.wsgi.application'
+
+# Registration settings
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = '/cookbook/'
+LOGIN_URL = '/accounts/login/'
 
 
 # Database

@@ -35,11 +35,10 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'index' %}">Index</a></li>
                         {% if user.is_authenticated %}
                         {% else %}
                         {% endif %}
-                            <li><a href="{% url 'index' %}">Index</a></li>
                   </ul>
             </div>
           </div>
