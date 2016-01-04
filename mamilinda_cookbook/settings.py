@@ -141,8 +141,6 @@ STATICFILES_DIRS = (
     STATIC_PATH,
 )
 
-STATIC_ROOT = STATIC_PATH
-
 try:
     from local_settings import *
 except:
