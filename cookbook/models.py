@@ -12,6 +12,9 @@ class Category(models.Model):
     name = models.CharField(max_length=128, unique=True, default='')
     slug = models.SlugField(unique=True)
 
+    def first_page(self):
+        return self.recipe_set.order_by('book_page').first().book_page
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
