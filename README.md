@@ -12,9 +12,9 @@ from django.contrib.sites.requests import RequestSite
 
 
 TODO:
-- Ordering of the categories on the side (just hardcode)
 - Imbeded recipes (like in many Desserts). Dessert should be able to be marked as part of another, won't show up independently but can search, will show up as part of the correct recipe in the 'instructions' section
-- add in 'serves' and basic recipe formatting
+- In addition, when a recipe is selected, show all recipes from the same page (receipe_set?)
+- add basic recipe formatting
 - implement fancy wysiwyg editing
 - add formatting inside recipes
 - shift all page numbers if a new recipe is inserted

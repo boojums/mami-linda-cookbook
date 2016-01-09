@@ -39,6 +39,20 @@ class Recipe(models.Model):
     blob_ingredients = models.TextField(blank=True, null=True)
     instructions = models.TextField()
     preptime = models.IntegerField(blank=True, null=True)
+    book_edition = models.IntegerField(blank=True, null=True)
+
+    def next(self):
+        firstnext = Recipe.objects.filter(book_page__gt=self.book_page)\
+                          .order_by('book_page')\
+                          .first()
+        # allnext = Recipe.objects.filter(book_page=firstnext.book_page)
+        return firstnext
+
+    def previous(self):
+        firstprev = Recipe.objects.filter(book_page__lt=self.book_page)\
+                          .order_by('-book_page')\
+                          .first()
+        return firstprev
 
     def __str__(self):
         return self.title
@@ -55,17 +69,18 @@ def createIngredients(sender, instance, created, **kwargs):
             Ingredient.objects.create(name=elem, recipe=instance)
         instance.blob_ingredients = ''
         instance.save()
-       
+
 
 signals.post_save.connect(createIngredients, sender=Recipe)
+
 
 # TODO: unique place + recipe?
 class Ingredient(models.Model):
     name = models.CharField(max_length=256)
     recipe = models.ForeignKey(Recipe)
     # TODO: use latest djfractions with DecimalFractionField?
-    quantity = models.DecimalField(null=True, blank=True, 
-                                   max_digits=10, 
+    quantity = models.DecimalField(null=True, blank=True,
+                                   max_digits=10,
                                    decimal_places=5)
     units_choices = (
         ('tsp', 'teaspoon'),
@@ -81,7 +96,7 @@ class Ingredient(models.Model):
         ('l', 'liters')
         )
 
-    units = models.CharField(max_length=40, 
+    units = models.CharField(max_length=40,
                              choices=units_choices,
                              null=True, blank=True)
 
@@ -104,5 +119,5 @@ class Ingredient(models.Model):
         return '{} {} {}'.format(quantity, units, self.name)
 
     class Meta:
-        #unique_together = 
+        # unique_together =
         pass

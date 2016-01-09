@@ -7,15 +7,5 @@
     <h1>Mami Linda's Cookbook</h1>
     <a href="{% url 'recipe_list' %}">All recipes</a>
 
-    {% if categories %}
-        <ul>
-            {% for category in categories %}
-            <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <strong>There are no categories present.</strong>
-    {% endif %}
-
 
 {% endblock %}
