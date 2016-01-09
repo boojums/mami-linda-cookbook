@@ -29,6 +29,10 @@
     {% endif %}
         <p>{{ recipe.instructions | linebreaks }}</p>
 
-    <a href="{% url 'recipe' recipe.previous.slug %}">{{ recipe.previous.title }}</a>
-    <a href="{% url 'recipe' recipe.next.slug %}">{{ recipe.next.title }}</a>
+    {% if recipe.previous %}
+        <a href="{% url 'recipe' recipe.previous.slug %}">{{ recipe.previous.title }}</a>
+    {% endif %}
+    {% if recipe.next %}
+        <a href="{% url 'recipe' recipe.next.slug %}">{{ recipe.next.title }}</a>
+    {% endif %}
 {% endblock %}
