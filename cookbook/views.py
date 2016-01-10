@@ -11,7 +11,6 @@ def index(request):
     return render(request, 'cookbook/index.html', context_dict)
 
 
-@login_required
 def category(request, category_name_slug):
     context_dict = {}
 
@@ -25,6 +24,7 @@ def category(request, category_name_slug):
     return render(request, 'cookbook/category.html', context_dict)
 
 
+@login_required
 def recipe(request, recipe_name_slug):
     context_dict = {}
     recipe = get_object_or_404(Recipe, slug=recipe_name_slug)
